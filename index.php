@@ -12,7 +12,6 @@ if(is_array($paths)){
 
     for($i=0; $i<$data["count"]; $i++) {
       $pwdset = new DateTime(convert_AD_date($data[$i]["pwdlastset"][0]));
-      $heslonastaveno = $pwdset->format('d. m. Y H:i:s');
 
       $expiry = new DateTime(convert_AD_date($data[$i]["pwdlastset"][0]));
       $expiry->modify('+' . PWD_VALID_DAYS . ' day');
@@ -47,7 +46,7 @@ if(is_array($paths)){
       }
       else{
         //password is OK,
-        // @TODO udelat nastaveni, zda chteji odesilat email, ze ucet byl zkontrolovan
+        // @TODO setting if they want send email, if account was checked
         //include email template here
         if(file_exists("./tempates/email_template_for_admins.php")){
           require_once("./tempates/email_template_for_admins.php");
@@ -75,9 +74,9 @@ if(is_array($paths)){
   }
 }
 else{
-  //@TODO vylepsi logovani pro presne zjisteni chyb
+  //@TODO better logging
   $logtime = date(DATE_FORMAT_LOG . substr((string)microtime(), 1, 8));
-  $log = "$logtime Chyba: missing path for accounts.";
+  $log = "$logtime ERROR: missing path for accounts.";
   file_put_contents(dirname(__FILE__) . '/' . NAME_LOG_FILE . '.txt', $log, FILE_APPEND);
 }
 ?>
